@@ -7,6 +7,11 @@ public class Node {
         this.marked = false;
     }
 
+    public Node(int id, boolean marked) {
+        this.id = id;
+        this.marked = marked;
+    }
+
     public void mark() {
         this.marked = true;
     }
@@ -17,5 +22,10 @@ public class Node {
 
     public boolean isMarked() {
         return marked;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + id + ", " + marked + "]";
     }
 }
