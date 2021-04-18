@@ -16,7 +16,7 @@ public class HypercubeTests {
 
     @Test
     public void checkIfNeighboursCheckedInDim3() {
-        hypercube = new Hypercube(3);
-        assertEquals(hypercube.searchForLongestCoil(), 3);
+        hypercube = new Hypercube(2);
+        assertEquals(hypercube.searchForLongestCoil(), 2);
     }
 }
