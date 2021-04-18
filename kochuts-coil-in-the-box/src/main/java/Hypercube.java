@@ -1,39 +1,70 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class Hypercube {
     private int depth; //TODO: change later to dimension
     private ArrayList<Node> nodes;
+    private Stack<Integer> nodeStack;
+    private Stack<Integer> pivotStack;
+    private ArrayList<Integer> currentNeighbours;
+    private int currentNode;
+    private int currentPivot;
 
     public Hypercube(int depth) {
         this.depth = depth;
     }
 
+    private void createNodeStack() {
+        nodeStack = new Stack<>();
+        for(Node node : nodes)
+            nodeStack.push(node.getId());
+    }
 
-    private ArrayList<Node> markNeighbours(Node currentNode) {
-        ArrayList<Node> neighbours = new ArrayList<>();
+    private void createPivotStack() {
+        pivotStack = new Stack<>();
+        System.out.println(depth);
+        for(int i=depth; i>0; i--)
+            pivotStack.push(i);
+    }
+
+    private void markCurrentNeighbours() {
+        this.currentNeighbours = new ArrayList<>();
         for(int i=0; i<depth; i++) {
-            int neighbourId = currentNode.getId() ^ (1<<i);
-            if(!nodes.get(neighbourId).isMarked()) {
-                nodes.get(neighbourId).mark();
-                neighbours.add(new Node(neighbourId, true));
+            int neighbourId = this.currentNode ^ (1<<i);
+            for(Node node : nodes) {
+                if(node.getId()==neighbourId) {
+                    if (!node.isMarked()) {
+                        node.mark();
+                        this.currentNeighbours.add(neighbourId);
+                    }
+                }
             }
         }
-        System.out.println(neighbours);
-        return neighbours;
+        System.out.println(this.currentNeighbours);
     }
 
     public int searchForLongestCoil() {
-        int result = 0;
-        int pivot = 1; //TODO: change later to currentDimension
-        Node currentNode;
-        ArrayList<Node> currentNeighbours = new ArrayList<>();
-
         this.nodes = GrayCode.createGrayCode(depth);
-        currentNode = nodes.get(0);
-        currentNeighbours = markNeighbours(currentNode);
+        createNodeStack();
+        createPivotStack();
+
+        this.currentNode = nodeStack.peek();
+        this.currentPivot = pivotStack.peek();
+        markCurrentNeighbours();
+        System.out.println(nodes);
+//        if(this.currentNeighbours.size()==0 || ) //TODO number of possible return paths is zero
+//            return 0; //TODO: zmienic to pozniej na odpowiedni format
+//        else {
+//            for (int i=0; i<currentPivot; i++) {
+//                if(currentNeighbours.get(i).isMarked()) {
+//                    if() //TODO: can_close_coil
+//                        //TODO: save_coil(depth);
+//
+//                }
+//            }
+//        }
 
 
-
-        return result;
+        return 0;
     }
 }

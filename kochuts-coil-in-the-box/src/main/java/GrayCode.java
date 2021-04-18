@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 public class GrayCode {
-
     public static ArrayList<Node> createGrayCode(int dimension) {
         ArrayList<Node> codes;
 
