@@ -22,8 +22,9 @@ public class Hypercube {
 
     private void createPivotStack() {
         pivotStack = new Stack<>();
-        for(int i = dimension; i>0; i--)
+        for(int i = dimension-1; i>=0; i--) {
             pivotStack.push(i);
+        }
     }
 
     private void saveCurrentNeighbours() {
@@ -37,7 +38,8 @@ public class Hypercube {
         }
     }
 
-    private boolean currentNeighbourThatIsntMarkedExists() {
+    private boolean allCurrentNeighboursAreMarked() {
+        System.out.println(this.currentNeighbours);
         int amount = this.currentNeighbours.size();
         boolean[] results = new boolean[amount];
 
@@ -54,8 +56,13 @@ public class Hypercube {
         return results[amount-1];
     }
 
-    private boolean currentNeighbourIsMarked(int i) {
-        return this.nodes.get(this.currentNeighbours.get(i)).isMarked();
+    private boolean currentNeighbourIsNotMarked(int i) {
+        boolean isMarked = this.nodes.get(this.currentNeighbours.get(i)).isMarked();
+        return !isMarked;
+    }
+
+    private void markCurrentNeighbour(int i) {
+        this.nodes.get(this.currentNeighbours.get(i)).mark();
     }
 
     private boolean canCloseCoil(int i) {
@@ -71,49 +78,57 @@ public class Hypercube {
             node.unmark();
     }
 
-    public ArrayList<Integer> searchForLongestCoil() {
-        ArrayList<Integer> result = new ArrayList<>();
-        this.nodes = GrayCode.createGrayCode(dimension);
-        createNodeStack();
-        createPivotStack();
-
+    //TODO: dodac currentCycle i cycles?
+    private int search(int depth) {
         this.currentNode = nodeStack.peek();
         this.currentPivot = pivotStack.peek();
         saveCurrentNeighbours();
-        if(currentNeighbourThatIsntMarkedExists()) //TODO number of possible return paths is zero
-            return null; //TODO: zmienic to pozniej na odpowiedni format
+        if(allCurrentNeighboursAreMarked()) //TODO number of possible return paths is zero
+            return 0;
         else {
             for (int i=0; i<=currentPivot; i++) {
-                if(currentNeighbourIsMarked(i)) {
-                    if(canCloseCoil(i))
+                if(currentNeighbourIsNotMarked(i)) {
+                    markCurrentNeighbour(i);
+                    if(canCloseCoil(i)) { //TODO: poprawic!
                         saveCoil(); //TODO: zapisywac!
+                    }
                     this.nodeStack.push(this.currentNeighbours.get(i));
                     this.pivotStack.push(this.currentPivot);
-                    //TODO: rekurencja
+                    search(depth+1);
                     this.nodeStack.pop();
                     this.pivotStack.pop();
                     if(this.nodeStack.isEmpty())
-                        return null; //TODO: poprawic na odpowiedni format
+                        return 0;
                 }
                 if(this.currentPivot<dimension-1) {
                     this.currentPivot += 1;
-                    if(currentNeighbourIsMarked(currentPivot)) {
+                    if(currentNeighbourIsNotMarked(currentPivot)) {
+                        markCurrentNeighbour(currentPivot);
                         if(canCloseCoil(currentPivot))
                             saveCoil();
                         this.nodeStack.push(this.currentNeighbours.get(currentPivot));
                         this.pivotStack.push(currentPivot);
-                        //TODO: rekurencja
+                        search(depth+1);
                         this.nodeStack.pop();
                         this.pivotStack.pop();
                         if(this.nodeStack.isEmpty())
-                            return null; //TODO: poprawic na odpowiedni format
+                            return 0;
                     }
                 }
             }
             unmarkAllNodes();
         }
+        return 0;
+    }
 
+    public void searchForLongestCoil() {
+        this.nodes = GrayCode.createGrayCode(dimension);
+        createNodeStack();
+        createPivotStack();
+        search(0);
+    }
 
-        return result;
+    public void showResult() {
+        //TODO
     }
 }
