@@ -66,7 +66,7 @@ public class Hypercube {
     }
 
     private boolean canCloseCoil(int i) {
-        return nodes.get(nodes.size()-1).getId() == this.nodes.get(this.currentNeighbours.get(i)).getId();
+        return nodes.get(nodes.size()-1).getId() == this.currentNeighbours.get(i);
     }
 
     private void saveCoil() {
@@ -98,9 +98,9 @@ public class Hypercube {
         else {
             for (int i=0; i<=currentPivot; i++) {
                 if(currentNeighbourIsNotMarked(i)) {
-                    markCurrentNeighbour(i);
                     if(canCloseCoil(i))
                         saveCoil();
+                    markCurrentNeighbour(i);
                     this.nodeStack.push(this.currentNeighbours.get(i));
                     this.pivotStack.push(this.currentPivot);
                     search(depth+1);
