@@ -33,13 +33,11 @@ public class Hypercube {
             int neighbourId = this.currentNode ^ (1<<i);
             for(Node node : nodes)
                 if(node.getId()==neighbourId)
-                    if (!node.isMarked())
-                        this.currentNeighbours.add(neighbourId);
+                    this.currentNeighbours.add(neighbourId);
         }
     }
 
     private boolean allCurrentNeighboursAreMarked() {
-        System.out.println(this.currentNeighbours);
         int amount = this.currentNeighbours.size();
         boolean[] results = new boolean[amount];
 
@@ -78,7 +76,7 @@ public class Hypercube {
             node.unmark();
     }
 
-    //TODO: dodac currentCycle i cycles?
+    //TODO: dodac currentCycle i cycles
     private int search(int depth) {
         this.currentNode = nodeStack.peek();
         this.currentPivot = pivotStack.peek();
