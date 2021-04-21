@@ -4,9 +4,11 @@ import java.util.Stack;
 public class Hypercube {
     private int dimension;
     private ArrayList<Node> nodes;
+    private ArrayList<ArrayList<Integer>> coils;
     private Stack<Integer> nodeStack;
     private Stack<Integer> pivotStack;
     private ArrayList<Integer> currentNeighbours;
+    private ArrayList<Integer> currentCoil;
     private int currentNode;
     private int currentPivot;
 
@@ -68,7 +70,8 @@ public class Hypercube {
     }
 
     private void saveCoil() {
-        //TODO
+        coils.add(currentCoil);
+        currentCoil = new ArrayList<>();
     }
 
     private void unmarkAllNodes() {
@@ -76,20 +79,28 @@ public class Hypercube {
             node.unmark();
     }
 
-    //TODO: dodac currentCycle i cycles
+    public void showResult() {
+        int longestCoil = -1;
+        for(ArrayList<Integer> coil : coils)
+            if(coil.size() > longestCoil)
+                longestCoil = coil.size();
+        System.out.println(longestCoil);
+        System.out.println(coils);
+    }
+
     private int search(int depth) {
         this.currentNode = nodeStack.peek();
         this.currentPivot = pivotStack.peek();
         saveCurrentNeighbours();
+        this.currentCoil.add(this.currentNode);
         if(allCurrentNeighboursAreMarked()) //TODO number of possible return paths is zero
             return 0;
         else {
             for (int i=0; i<=currentPivot; i++) {
                 if(currentNeighbourIsNotMarked(i)) {
                     markCurrentNeighbour(i);
-                    if(canCloseCoil(i)) { //TODO: poprawic!
-                        saveCoil(); //TODO: zapisywac!
-                    }
+                    if(canCloseCoil(i))
+                        saveCoil();
                     this.nodeStack.push(this.currentNeighbours.get(i));
                     this.pivotStack.push(this.currentPivot);
                     search(depth+1);
@@ -114,19 +125,21 @@ public class Hypercube {
                     }
                 }
             }
-            unmarkAllNodes();
         }
+        unmarkAllNodes();
         return 0;
     }
 
     public void searchForLongestCoil() {
         this.nodes = GrayCode.createGrayCode(dimension);
+        this.coils = new ArrayList<>();
+        this.currentCoil = new ArrayList<>();
+
         createNodeStack();
         createPivotStack();
         search(0);
+        showResult();
     }
 
-    public void showResult() {
-        //TODO
-    }
+
 }

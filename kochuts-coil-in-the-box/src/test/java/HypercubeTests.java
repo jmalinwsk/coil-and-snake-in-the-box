@@ -1,8 +1,5 @@
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,7 +13,7 @@ public class HypercubeTests {
 
     @Test
     public void checkIfNeighboursCheckedInDim2() {
-        hypercube = new Hypercube(2);
+        hypercube = new Hypercube(3);
         hypercube.searchForLongestCoil();
         assertEquals(0, 0);
     }
