@@ -1,8 +1,11 @@
 import java.util.ArrayList;
 import java.util.Stack;
 
+import static java.lang.Math.pow;
+
 public class Hypercube {
     private int dimension;
+    private int amountOfNodes;
     private ArrayList<Node> nodes;
     private ArrayList<ArrayList<Integer>> coils;
     private Stack<Integer> nodeStack;
@@ -11,6 +14,13 @@ public class Hypercube {
 
     public Hypercube(int dimension) {
         this.dimension = dimension;
+    }
+
+    private void createNodes() {
+        nodes = new ArrayList<>();
+        for (int i=0; i<amountOfNodes; i++)
+            nodes.add(new Node(i));
+        nodes.get(0).mark();
     }
 
     private void createNodeStack() {
@@ -47,10 +57,12 @@ public class Hypercube {
         return marked;
     }
 
+    //TODO: napisac
     private boolean canCloseCoil(int i) {
-        return nodes.get(nodes.size()-1).getId() == this.currentNeighbours.get(i);
+        return false;//nodes.get(nodes.size()-1).getId() == this.currentNeighbours.get(i);
     }
 
+    //TODO: napisac
     private void saveCoil() {
         coils.add(currentCoil);
         currentCoil = new ArrayList<>();
@@ -119,15 +131,10 @@ public class Hypercube {
     }
 
     public void searchForLongestCoil() {
-        // *********** poprawić ***********
-        this.nodes = GrayCode.createGrayCode(dimension);
-
+        this.amountOfNodes = (int)(pow(2, dimension-1)*dimension);
+        createNodes();
         this.coils = new ArrayList<>();
         this.currentCoil = new ArrayList<>();
-
-        for(Node node : nodes)
-            if(node.getId()==0)
-               node.mark();
 
         createNodeStack();
         createPivotStack();
