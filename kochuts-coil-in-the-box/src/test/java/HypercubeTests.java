@@ -12,8 +12,8 @@ public class HypercubeTests {
     }
 
     @Test
-    public void checkIfNeighboursCheckedInDim2() {
-        hypercube = new Hypercube(2);
+    public void checkIfNeighboursCheckedInDim() {
+        hypercube = new Hypercube(7);
         hypercube.searchForLongestCoil();
         assertEquals(0, 0); //TODO: testy
     }

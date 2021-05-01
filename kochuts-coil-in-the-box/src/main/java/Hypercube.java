@@ -7,10 +7,8 @@ public class Hypercube {
     private int dimension;
     private int amountOfNodes;
     private ArrayList<Node> nodes;
-    private ArrayList<ArrayList<Integer>> coils;
     private Stack<Integer> nodeStack;
     private Stack<Integer> pivotStack;
-    private ArrayList<Integer> currentCoil;
 
     public Hypercube(int dimension) {
         this.dimension = dimension;
@@ -64,8 +62,8 @@ public class Hypercube {
 
     //TODO: napisac
     private void saveCoil() {
-        coils.add(currentCoil);
-        currentCoil = new ArrayList<>();
+//        coils.add(currentCoil);
+//        currentCoil = new ArrayList<>();
     }
 
     private void unmarkAllNodesMarkedAtThisLevel(ArrayList<Node> marked) {
@@ -74,12 +72,12 @@ public class Hypercube {
     }
 
     public void showResult() {
-        int longestCoil = -1;
-        for(ArrayList<Integer> coil : coils)
-            if(coil.size() > longestCoil)
-                longestCoil = coil.size();
-        System.out.println(longestCoil);
-        System.out.println(coils);
+//        int longestCoil = -1;
+//        for(ArrayList<Integer> coil : coils)
+//            if(coil.size() > longestCoil)
+//                longestCoil = coil.size();
+//        System.out.println(longestCoil);
+//        System.out.println(coils);
     }
 
     private int search(int depth) {
@@ -133,12 +131,9 @@ public class Hypercube {
     public void searchForLongestCoil() {
         this.amountOfNodes = (int)(pow(2, dimension-1)*dimension);
         createNodes();
-        this.coils = new ArrayList<>();
-        this.currentCoil = new ArrayList<>();
 
         createNodeStack();
         createPivotStack();
         search(0);
-        showResult();
     }
 }
