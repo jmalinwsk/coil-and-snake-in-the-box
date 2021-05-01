@@ -7,10 +7,7 @@ public class Hypercube {
     private ArrayList<ArrayList<Integer>> coils;
     private Stack<Integer> nodeStack;
     private Stack<Integer> pivotStack;
-    private ArrayList<Integer> currentNeighbours;
     private ArrayList<Integer> currentCoil;
-    private int currentNode;
-    private int currentPivot;
 
     public Hypercube(int dimension) {
         this.dimension = dimension;
@@ -18,51 +15,36 @@ public class Hypercube {
 
     private void createNodeStack() {
         nodeStack = new Stack<>();
-        for(Node node : nodes)
-            nodeStack.push(node.getId());
+        nodeStack.push(0);
     }
 
     private void createPivotStack() {
         pivotStack = new Stack<>();
-        for(int i = dimension-1; i>=0; i--) {
-            pivotStack.push(i);
-        }
+        pivotStack.push(-1);
     }
 
-    private void saveCurrentNeighbours() {
-        this.currentNeighbours = new ArrayList<>();
-        for(int i = 0; i< dimension; i++) {
-            int neighbourId = this.currentNode ^ (1<<i);
+    private boolean allCurrentNeighboursAreMarked(ArrayList<Node> markedAtThisLevel) {
+        return markedAtThisLevel.size() == 0;
+    }
+
+    private boolean iThNeighborWasJustMarked(int iThNeighbourId, ArrayList<Node> marked) {
+        for(Node node : marked)
+            if(node.getId()==iThNeighbourId)
+                return true;
+        return false;
+    }
+
+    private ArrayList<Node> markCurrentNeighbours(int currentNode) {
+        ArrayList<Node> marked = new ArrayList<>();
+        for(int i = 0; i<dimension; i++) {
+            int neighbourId = currentNode ^ (1<<i);
             for(Node node : nodes)
-                if(node.getId()==neighbourId)
-                    this.currentNeighbours.add(neighbourId);
+                if(node.getId()==neighbourId && !node.isMarked()) {
+                    marked.add(node);
+                    node.mark();
+                }
         }
-    }
-
-    private boolean allCurrentNeighboursAreMarked() {
-        int amount = this.currentNeighbours.size();
-        boolean[] results = new boolean[amount];
-
-        for(int i=0; i<amount; i++) {
-            for (Node node : nodes)
-                if (node.getId() == this.currentNeighbours.get(i))
-                    if(node.isMarked())
-                        results[i] = true;
-                    else results[i] = false;
-        }
-        for(int i=1; i<amount; i++)
-            results[i] = results[i] || results[i-1];
-
-        return results[amount-1];
-    }
-
-    private boolean currentNeighbourIsNotMarked(int i) {
-        boolean isMarked = this.nodes.get(this.currentNeighbours.get(i)).isMarked();
-        return !isMarked;
-    }
-
-    private void markCurrentNeighbour(int i) {
-        this.nodes.get(this.currentNeighbours.get(i)).mark();
+        return marked;
     }
 
     private boolean canCloseCoil(int i) {
@@ -74,8 +56,8 @@ public class Hypercube {
         currentCoil = new ArrayList<>();
     }
 
-    private void unmarkAllNodes() {
-        for(Node node : this.nodes)
+    private void unmarkAllNodesMarkedAtThisLevel(ArrayList<Node> marked) {
+        for(Node node : marked)
             node.unmark();
     }
 
@@ -89,57 +71,67 @@ public class Hypercube {
     }
 
     private int search(int depth) {
-        this.currentNode = nodeStack.peek();
-        this.currentPivot = pivotStack.peek();
-        saveCurrentNeighbours();
-        this.currentCoil.add(this.currentNode);
-        if(allCurrentNeighboursAreMarked()) //TODO number of possible return paths is zero
+        int currentNode = nodeStack.peek();
+        int currentPivot = pivotStack.peek();
+        ArrayList<Node> markedAtThisLevel = markCurrentNeighbours(currentNode);
+
+        for (int j=0; j<depth; j++)
+            System.out.print("-");
+        System.out.print(currentNode);
+        System.out.print(", ");
+        System.out.println(depth);
+
+        if(allCurrentNeighboursAreMarked(markedAtThisLevel)) //TODO number of possible return paths is zero
             return 0;
         else {
             for (int i=0; i<=currentPivot; i++) {
-                if(currentNeighbourIsNotMarked(i)) {
-                    if(canCloseCoil(i))
-                        saveCoil();
-                    markCurrentNeighbour(i);
-                    this.nodeStack.push(this.currentNeighbours.get(i));
-                    this.pivotStack.push(this.currentPivot);
+                int iThNeighbourId = currentNode ^ (1<<i);
+                if(iThNeighborWasJustMarked(iThNeighbourId, markedAtThisLevel)) {
+//                     if(canCloseCoil(i))
+//                         saveCoil();
+                    nodeStack.push(iThNeighbourId);
+                    pivotStack.push(currentPivot);
                     search(depth+1);
-                    this.nodeStack.pop();
-                    this.pivotStack.pop();
-                    if(this.nodeStack.isEmpty())
+                    nodeStack.pop();
+                    pivotStack.pop();
+                    if(nodeStack.isEmpty())
                         return 0;
                 }
-                if(this.currentPivot<dimension-1) {
-                    this.currentPivot += 1;
-                    if(currentNeighbourIsNotMarked(currentPivot)) {
-                        markCurrentNeighbour(currentPivot);
-                        if(canCloseCoil(currentPivot))
-                            saveCoil();
-                        this.nodeStack.push(this.currentNeighbours.get(currentPivot));
-                        this.pivotStack.push(currentPivot);
-                        search(depth+1);
-                        this.nodeStack.pop();
-                        this.pivotStack.pop();
-                        if(this.nodeStack.isEmpty())
-                            return 0;
-                    }
+            }
+            if(currentPivot<dimension-1) {
+                currentPivot += 1;
+                int neighbourId = currentNode ^ (1<<currentPivot);
+                if(iThNeighborWasJustMarked(neighbourId, markedAtThisLevel)) {
+//                     if(canCloseCoil(currentPivot))
+//                         saveCoil();
+                    nodeStack.push(neighbourId);
+                    pivotStack.push(currentPivot);
+                    search(depth+1);
+                    nodeStack.pop();
+                    pivotStack.pop();
+                    if(nodeStack.isEmpty())
+                        return 0;
                 }
             }
         }
-        unmarkAllNodes();
+        unmarkAllNodesMarkedAtThisLevel(markedAtThisLevel);
         return 0;
     }
 
     public void searchForLongestCoil() {
+        // *********** poprawić ***********
         this.nodes = GrayCode.createGrayCode(dimension);
+
         this.coils = new ArrayList<>();
         this.currentCoil = new ArrayList<>();
+
+        for(Node node : nodes)
+            if(node.getId()==0)
+               node.mark();
 
         createNodeStack();
         createPivotStack();
         search(0);
         showResult();
     }
-
-
 }
