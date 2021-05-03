@@ -120,7 +120,15 @@ public class SnakeInTheBox {
                 return coil2.size() - coil1.size();
             }
         });
-        System.out.println(this.coils.get(0));
+
+        int i=0;
+        for(ArrayList<Integer> coil : coils) {
+            System.out.print(coil.size()-1 + " : ");
+            System.out.println(coil);
+            i++;
+            if(i == 10)
+                break;
+        }
 
         return this.coils.get(0);
     }
