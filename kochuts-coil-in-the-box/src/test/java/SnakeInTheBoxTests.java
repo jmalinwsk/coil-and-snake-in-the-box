@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class HypercubeTests {
+public class SnakeInTheBoxTests {
     private Hypercube hypercube;
     private SnakeInTheBox snakeInTheBox;
 
