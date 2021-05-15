@@ -3,10 +3,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Stack;
 
-
 public class SnakeInTheBox {
     private Hypercube hypercube;
-    private ArrayList<ArrayList<Integer>> coils;
+    private ArrayList<ArrayList<Integer>> snakes;
     private Stack<Integer> nodeStack;
     private Stack<Integer> pivotStack;
 
@@ -48,13 +47,36 @@ public class SnakeInTheBox {
         return marked;
     }
 
+    private void saveBestSnake() {
+        Stack<Integer> currentStack = (Stack<Integer>) this.nodeStack.clone();
+        ArrayList<Integer> snake = new ArrayList<>();
+        while (!currentStack.isEmpty()) {
+            snake.add(currentStack.pop());
+        }
+        if (snakes.isEmpty())
+            this.snakes.add(snake);
+        else {
+            Collections.sort(this.snakes, new Comparator<ArrayList>() {
+                public int compare(ArrayList s1, ArrayList s2) {
+                    return s2.size() - s1.size();
+                }
+            });
+            if (snake.size() > snakes.get(0).size()) {
+                snakes = new ArrayList<ArrayList<Integer>>();
+                snakes.add(snake);
+            } else if (snake.size() == snakes.get(0).size()) {
+                snakes.add(snake);
+            }
+        }
+    }
+
     private void saveSnake() {
         Stack<Integer> currentStack = (Stack<Integer>) this.nodeStack.clone();
-        ArrayList<Integer> coil = new ArrayList<>();
+        ArrayList<Integer> snake = new ArrayList<>();
         while (!currentStack.isEmpty()) {
-            coil.add(currentStack.pop());
+            snake.add(currentStack.pop());
         }
-        this.coils.add(coil);
+        this.snakes.add(snake);
     }
 
     private void unmarkAllNodesMarkedAtThisLevel(ArrayList<Node> marked) {
@@ -62,19 +84,20 @@ public class SnakeInTheBox {
             node.unmark();
     }
 
+    private void showResult() {
+        for(ArrayList<Integer> s : this.snakes)
+            System.out.println(s.size()-1 + " : " + s);
+    }
+
     private int search(int depth) {
         int currentNode = nodeStack.peek();
         int currentPivot = pivotStack.peek();
         ArrayList<Node> markedAtThisLevel = markCurrentNeighbours(currentNode);
 
-//        for (int j = 0; j < depth; j++)
-//            System.out.print("-");
-//        System.out.print(currentNode);
-//        System.out.print(", ");
-//        System.out.println(depth);
-
-        if (allCurrentNeighboursAreMarked(markedAtThisLevel)) {//TODO number of possible return paths is zero
-            saveSnake();
+        if (allCurrentNeighboursAreMarked(markedAtThisLevel)) {
+            if(hypercube.checkIfShowOnlyBestResult())
+                saveBestSnake();
+                else saveSnake();
             return 0;
         } else {
             for (int i = 0; i <= currentPivot; i++) {
@@ -107,29 +130,16 @@ public class SnakeInTheBox {
         return 0;
     }
 
-    public ArrayList<Integer> searchForLongestSnake() {
-        this.coils = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> searchForLongestSnake() {
+        this.snakes = new ArrayList<>();
         hypercube.getNodes().get(0).mark();
         createNodeStack();
         createPivotStack();
 
         search(0);
 
-        Collections.sort(this.coils, new Comparator<ArrayList>() {
-            public int compare(ArrayList coil1, ArrayList coil2) {
-                return coil2.size() - coil1.size();
-            }
-        });
+        showResult();
 
-        int i=0;
-        for(ArrayList<Integer> coil : coils) {
-            System.out.print(coil.size()-1 + " : ");
-            System.out.println(coil);
-            i++;
-            if(i == 10)
-                break;
-        }
-
-        return this.coils.get(0);
+        return this.snakes; //for unit testing
     }
 }
