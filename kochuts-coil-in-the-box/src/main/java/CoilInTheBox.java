@@ -4,14 +4,16 @@ import java.util.Comparator;
 import java.util.Stack;
 
 public class CoilInTheBox {
-    private Hypercube hypercube;
+    private final Hypercube hypercube;
     private ArrayList<ArrayList<Integer>> coils;
     private Stack<Integer> nodeStack;
     private Stack<Integer> pivotStack;
     private ArrayList<Integer> returnPaths;
+    private final boolean showOnlyBestResult;
 
-    public CoilInTheBox(Hypercube hypercube) {
+    public CoilInTheBox(Hypercube hypercube, boolean showOnlyBestResult) {
         this.hypercube = hypercube;
+        this.showOnlyBestResult = showOnlyBestResult;
     }
 
     private void createNodeStack() {
@@ -107,7 +109,7 @@ public class CoilInTheBox {
             int neighbourId = top ^ (1 << i);
             if (returnPaths.contains(neighbourId)) {
                 nodeStack.push(neighbourId);
-                if(hypercube.checkIfShowOnlyBestResult())
+                if(showOnlyBestResult)
                     saveBestCoil();
                 else saveCoil();
                 nodeStack.pop();

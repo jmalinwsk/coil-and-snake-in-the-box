@@ -5,11 +5,9 @@ import static java.lang.Math.pow;
 public class Hypercube {
     private int dimension;
     private ArrayList<Node> nodes;
-    private boolean showOnlyBestResult;
 
-    public Hypercube(int dimension, boolean showOnlyBestResult) {
+    public Hypercube(int dimension) {
         this.dimension = dimension;
-        this.showOnlyBestResult = showOnlyBestResult;
         createNodes();
     }
 
@@ -27,6 +25,4 @@ public class Hypercube {
     public ArrayList<Node> getNodes() {
         return nodes;
     }
-
-    public boolean checkIfShowOnlyBestResult() {return showOnlyBestResult; }
 }

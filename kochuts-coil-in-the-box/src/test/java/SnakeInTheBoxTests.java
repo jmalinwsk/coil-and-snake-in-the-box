@@ -18,8 +18,8 @@ public class SnakeInTheBoxTests {
 
     @Test
     public void checkAllResultsForDim1() {
-        hypercube = new Hypercube(1, false);
-        snakeInTheBox = new SnakeInTheBox(hypercube);
+        hypercube = new Hypercube(1);
+        snakeInTheBox = new SnakeInTheBox(hypercube, false);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(0);
@@ -31,8 +31,8 @@ public class SnakeInTheBoxTests {
 
     @Test
     public void checkBestResultForDim1() {
-        hypercube = new Hypercube(1, true);
-        snakeInTheBox = new SnakeInTheBox(hypercube);
+        hypercube = new Hypercube(1);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(0);
@@ -44,8 +44,8 @@ public class SnakeInTheBoxTests {
 
     @Test
     public void checkAllResultsForDim2() {
-        hypercube = new Hypercube(2, false);
-        snakeInTheBox = new SnakeInTheBox(hypercube);
+        hypercube = new Hypercube(2);
+        snakeInTheBox = new SnakeInTheBox(hypercube, false);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(3); add(1); add(0);
@@ -57,8 +57,8 @@ public class SnakeInTheBoxTests {
 
     @Test
     public void checkBestResultForDim2() {
-        hypercube = new Hypercube(2, true);
-        snakeInTheBox = new SnakeInTheBox(hypercube);
+        hypercube = new Hypercube(2);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(3); add(1); add(0);
@@ -70,8 +70,8 @@ public class SnakeInTheBoxTests {
 
     @Test
     public void checkAllResultsForDim3() {
-        hypercube = new Hypercube(3, false);
-        snakeInTheBox = new SnakeInTheBox(hypercube);
+        hypercube = new Hypercube(3);
+        snakeInTheBox = new SnakeInTheBox(hypercube, false);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(6); add(7); add(3); add(1); add(0);
@@ -83,8 +83,8 @@ public class SnakeInTheBoxTests {
 
     @Test
     public void checkBestResultForDim3() {
-        hypercube = new Hypercube(3, true);
-        snakeInTheBox = new SnakeInTheBox(hypercube);
+        hypercube = new Hypercube(3);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(6); add(7); add(3); add(1); add(0);
@@ -96,8 +96,8 @@ public class SnakeInTheBoxTests {
 
     @Test
     public void checkAllResultsForDim4() {
-        hypercube = new Hypercube(4, false);
-        snakeInTheBox = new SnakeInTheBox(hypercube);
+        hypercube = new Hypercube(4);
+        snakeInTheBox = new SnakeInTheBox(hypercube, false);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(13); add(12); add(14); add(6); add(7); add(3); add(1); add(0);
@@ -121,8 +121,8 @@ public class SnakeInTheBoxTests {
 
     @Test
     public void checkBestResultForDim4() {
-        hypercube = new Hypercube(4, true);
-        snakeInTheBox = new SnakeInTheBox(hypercube);
+        hypercube = new Hypercube(4);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(13); add(12); add(14); add(6); add(7); add(3); add(1); add(0);
@@ -134,8 +134,8 @@ public class SnakeInTheBoxTests {
 
     @Test
     public void checkBestResultForDim5() {
-        hypercube = new Hypercube(5, true);
-        snakeInTheBox = new SnakeInTheBox(hypercube);
+        hypercube = new Hypercube(5);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(22); add(18); add(26); add(27); add(25); add(29); add(28);
@@ -176,8 +176,8 @@ public class SnakeInTheBoxTests {
 
     @Test
     public void checkBestResultForDim6() {
-        hypercube = new Hypercube(6, true);
-        snakeInTheBox = new SnakeInTheBox(hypercube);
+        hypercube = new Hypercube(6);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(10); add(26); add(18); add(50); add(48); add(56); add(40);

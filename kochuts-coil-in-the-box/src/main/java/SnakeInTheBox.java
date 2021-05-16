@@ -4,13 +4,15 @@ import java.util.Comparator;
 import java.util.Stack;
 
 public class SnakeInTheBox {
-    private Hypercube hypercube;
+    private final Hypercube hypercube;
     private ArrayList<ArrayList<Integer>> snakes;
     private Stack<Integer> nodeStack;
     private Stack<Integer> pivotStack;
+    private final boolean showOnlyBestResult;
 
-    public SnakeInTheBox(Hypercube hypercube) {
+    public SnakeInTheBox(Hypercube hypercube, boolean showOnlyBestResult) {
         this.hypercube = hypercube;
+        this.showOnlyBestResult = showOnlyBestResult;
     }
 
     private void createNodeStack() {
@@ -95,7 +97,7 @@ public class SnakeInTheBox {
         ArrayList<Node> markedAtThisLevel = markCurrentNeighbours(currentNode);
 
         if (allCurrentNeighboursAreMarked(markedAtThisLevel)) {
-            if(hypercube.checkIfShowOnlyBestResult())
+            if(showOnlyBestResult)
                 saveBestSnake();
                 else saveSnake();
             return 0;
