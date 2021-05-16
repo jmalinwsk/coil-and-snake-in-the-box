@@ -49,6 +49,14 @@ public class SnakeInTheBox {
         return marked;
     }
 
+    private void sortSnakes() {
+        Collections.sort(this.snakes, new Comparator<ArrayList>() {
+            public int compare(ArrayList s1, ArrayList s2) {
+                return s2.size() - s1.size();
+            }
+        });
+    }
+
     private void saveBestSnake() {
         Stack<Integer> currentStack = (Stack<Integer>) this.nodeStack.clone();
         ArrayList<Integer> snake = new ArrayList<>();
@@ -58,11 +66,7 @@ public class SnakeInTheBox {
         if (snakes.isEmpty())
             this.snakes.add(snake);
         else {
-            Collections.sort(this.snakes, new Comparator<ArrayList>() {
-                public int compare(ArrayList s1, ArrayList s2) {
-                    return s2.size() - s1.size();
-                }
-            });
+            sortSnakes();
             if (snake.size() > snakes.get(0).size()) {
                 snakes = new ArrayList<ArrayList<Integer>>();
                 snakes.add(snake);
@@ -86,9 +90,18 @@ public class SnakeInTheBox {
             node.unmark();
     }
 
+    private void printSnakes() {
+        for (ArrayList<Integer> s : this.snakes)
+            System.out.println(s.size() - 1 + " : " + s);
+    }
+
     private void showResult() {
-        for(ArrayList<Integer> s : this.snakes)
-            System.out.println(s.size()-1 + " : " + s);
+        if(showOnlyBestResult)
+            printSnakes();
+        else {
+            sortSnakes();
+            printSnakes();
+        }
     }
 
     private int search(int depth) {

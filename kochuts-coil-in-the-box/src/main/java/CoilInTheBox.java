@@ -71,6 +71,14 @@ public class CoilInTheBox {
         return result;
     }
 
+    private void sortCoils() {
+        Collections.sort(this.coils, new Comparator<ArrayList>() {
+            public int compare(ArrayList c1, ArrayList c2) {
+                return c2.size() - c1.size();
+            }
+        });
+    }
+
     private void saveBestCoil() {
         Stack<Integer> currentStack = (Stack<Integer>) this.nodeStack.clone();
         ArrayList<Integer> coil = new ArrayList<>();
@@ -80,11 +88,7 @@ public class CoilInTheBox {
         if (coils.isEmpty())
             this.coils.add(coil);
         else {
-            Collections.sort(this.coils, new Comparator<ArrayList>() {
-                public int compare(ArrayList c1, ArrayList c2) {
-                    return c2.size() - c1.size();
-                }
-            });
+            sortCoils();
             if (coil.size() > coils.get(0).size()) {
                 coils = new ArrayList<ArrayList<Integer>>();
                 coils.add(coil);
@@ -125,9 +129,18 @@ public class CoilInTheBox {
             node.unmark();
     }
 
-    private void showResult() {
+    private void printCoils() {
         for(ArrayList<Integer> s : this.coils)
             System.out.println(s.size() + " : " + s);
+    }
+
+    private void showResult() {
+        if(showOnlyBestResult)
+            printCoils();
+        else {
+            sortCoils();
+            printCoils();
+        }
     }
 
     private int search(int depth) {
