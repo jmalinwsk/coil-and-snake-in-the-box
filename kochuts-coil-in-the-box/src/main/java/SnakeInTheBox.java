@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,10 +10,24 @@ public class SnakeInTheBox {
     private Stack<Integer> nodeStack;
     private Stack<Integer> pivotStack;
     private final boolean showOnlyBestResult;
+    private final boolean saveToFile;
+    private FileParser fileParser;
 
-    public SnakeInTheBox(Hypercube hypercube, boolean showOnlyBestResult) {
+    public SnakeInTheBox(Hypercube hypercube, boolean showOnlyBestResult, boolean saveToFile) throws IOException {
         this.hypercube = hypercube;
         this.showOnlyBestResult = showOnlyBestResult;
+        this.saveToFile = saveToFile;
+        if(this.saveToFile)
+            if(showOnlyBestResult)
+                this.fileParser = new FileParser(
+                        "output/snake_" +
+                                this.hypercube.getDimension() +
+                                "_bestOnly.csv");
+            else
+                this.fileParser = new FileParser(
+                        "output/snake_" +
+                                this.hypercube.getDimension() +
+                                "_all.csv");
     }
 
     private void createNodeStack() {
@@ -57,7 +72,7 @@ public class SnakeInTheBox {
         });
     }
 
-    private void saveBestSnake() {
+    private void saveBestSnake() throws IOException {
         Stack<Integer> currentStack = (Stack<Integer>) this.nodeStack.clone();
         ArrayList<Integer> snake = new ArrayList<>();
         while (!currentStack.isEmpty()) {
@@ -69,20 +84,24 @@ public class SnakeInTheBox {
             sortSnakes();
             if (snake.size() > snakes.get(0).size()) {
                 snakes = new ArrayList<ArrayList<Integer>>();
+                fileParser.cleanFile();
                 snakes.add(snake);
+                fileParser.addToFile(snake, "snake");
             } else if (snake.size() == snakes.get(0).size()) {
                 snakes.add(snake);
+                fileParser.addToFile(snake, "snake");
             }
         }
     }
 
-    private void saveSnake() {
+    private void saveSnake() throws IOException {
         Stack<Integer> currentStack = (Stack<Integer>) this.nodeStack.clone();
         ArrayList<Integer> snake = new ArrayList<>();
         while (!currentStack.isEmpty()) {
             snake.add(currentStack.pop());
         }
         this.snakes.add(snake);
+        fileParser.addToFile(snake, "snake");
     }
 
     private void unmarkAllNodesMarkedAtThisLevel(ArrayList<Node> marked) {
@@ -104,7 +123,7 @@ public class SnakeInTheBox {
         }
     }
 
-    private int search(int depth) {
+    private int search(int depth) throws IOException {
         int currentNode = nodeStack.peek();
         int currentPivot = pivotStack.peek();
         ArrayList<Node> markedAtThisLevel = markCurrentNeighbours(currentNode);
@@ -145,15 +164,21 @@ public class SnakeInTheBox {
         return 0;
     }
 
-    public ArrayList<ArrayList<Integer>> searchForLongestSnake() {
+    public ArrayList<ArrayList<Integer>> searchForLongestSnake() throws IOException {
         this.snakes = new ArrayList<>();
         hypercube.getNodes().get(0).mark();
         createNodeStack();
         createPivotStack();
+        if(saveToFile)
+            fileParser.createFile();
 
         search(0);
 
-        showResult();
+        if(saveToFile) {
+            fileParser.closeFile();
+        }
+        else showResult();
+
 
         return this.snakes; //for unit testing
     }

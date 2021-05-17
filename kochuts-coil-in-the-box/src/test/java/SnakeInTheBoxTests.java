@@ -1,10 +1,11 @@
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SnakeInTheBoxTests {
     private Hypercube hypercube;
@@ -17,9 +18,9 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkAllResultsForDim1() {
+    public void checkAllResultsForDim1() throws IOException {
         hypercube = new Hypercube(1);
-        snakeInTheBox = new SnakeInTheBox(hypercube, false);
+        snakeInTheBox = new SnakeInTheBox(hypercube, false, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(0);
@@ -30,9 +31,9 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkBestResultForDim1() {
+    public void checkBestResultForDim1() throws IOException {
         hypercube = new Hypercube(1);
-        snakeInTheBox = new SnakeInTheBox(hypercube, true);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(0);
@@ -43,9 +44,9 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkAllResultsForDim2() {
+    public void checkAllResultsForDim2() throws IOException {
         hypercube = new Hypercube(2);
-        snakeInTheBox = new SnakeInTheBox(hypercube, false);
+        snakeInTheBox = new SnakeInTheBox(hypercube, false, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(3); add(1); add(0);
@@ -56,9 +57,9 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkBestResultForDim2() {
+    public void checkBestResultForDim2() throws IOException {
         hypercube = new Hypercube(2);
-        snakeInTheBox = new SnakeInTheBox(hypercube, true);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(3); add(1); add(0);
@@ -69,9 +70,9 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkAllResultsForDim3() {
+    public void checkAllResultsForDim3() throws IOException {
         hypercube = new Hypercube(3);
-        snakeInTheBox = new SnakeInTheBox(hypercube, false);
+        snakeInTheBox = new SnakeInTheBox(hypercube, false, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(6); add(7); add(3); add(1); add(0);
@@ -82,9 +83,9 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkBestResultForDim3() {
+    public void checkBestResultForDim3() throws IOException {
         hypercube = new Hypercube(3);
-        snakeInTheBox = new SnakeInTheBox(hypercube, true);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(6); add(7); add(3); add(1); add(0);
@@ -95,9 +96,9 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkAllResultsForDim4() {
+    public void checkAllResultsForDim4() throws IOException {
         hypercube = new Hypercube(4);
-        snakeInTheBox = new SnakeInTheBox(hypercube, false);
+        snakeInTheBox = new SnakeInTheBox(hypercube, false, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(13); add(12); add(14); add(6); add(7); add(3); add(1); add(0);
@@ -120,9 +121,9 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkBestResultForDim4() {
+    public void checkBestResultForDim4() throws IOException {
         hypercube = new Hypercube(4);
-        snakeInTheBox = new SnakeInTheBox(hypercube, true);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(13); add(12); add(14); add(6); add(7); add(3); add(1); add(0);
@@ -133,9 +134,20 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkBestResultForDim5() {
+    public void checkAllResultsBestLengthForDim5() throws IOException {
         hypercube = new Hypercube(5);
-        snakeInTheBox = new SnakeInTheBox(hypercube, true);
+        snakeInTheBox = new SnakeInTheBox(hypercube, false, true);
+        ArrayList<ArrayList<Integer>> result = snakeInTheBox.searchForLongestSnake();
+        int expected = result.get(0).size();
+        int actual = 13;
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void checkBestResultForDim5() throws IOException {
+        hypercube = new Hypercube(5);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(22); add(18); add(26); add(27); add(25); add(29); add(28);
@@ -175,9 +187,22 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkBestResultForDim6() {
+    public void checkAllResultsBestLengthForDim6() throws IOException {
         hypercube = new Hypercube(6);
-        snakeInTheBox = new SnakeInTheBox(hypercube, true);
+        snakeInTheBox = new SnakeInTheBox(hypercube, false, true);
+        ArrayList<ArrayList<Integer>> result = snakeInTheBox.searchForLongestSnake();
+        int expected = result.get(0).size();
+        for(int i=0; i<10; i++)
+            System.out.println(result.get(0).size());
+        int actual = 26;
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void checkBestResultForDim6() throws IOException {
+        hypercube = new Hypercube(6);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true, true);
         ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
         expected.add(new ArrayList<>() {{
             add(10); add(26); add(18); add(50); add(48); add(56); add(40);
@@ -191,15 +216,14 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkBestResultForDim7() {
-//        hypercube = new Hypercube(7, 1);
-//        snakeInTheBox = new SnakeInTheBox(hypercube);
-//        ArrayList<Integer> expected = new ArrayList<>() {{
-//            //TODO
-//        }};
-//        ArrayList<Integer> actual = snakeInTheBox.searchForLongestSnake();
+    @Disabled("do not start this test if you do not have resources and/or time")
+    public void checkBestResultForDim7() throws IOException {
+        hypercube = new Hypercube(7);
+        snakeInTheBox = new SnakeInTheBox(hypercube, true, true);
+        ArrayList<ArrayList<Integer>> expected = new ArrayList<>() {{
+        }};
+        ArrayList<ArrayList<Integer>> actual = snakeInTheBox.searchForLongestSnake();
 
-//        assertEquals(expected, actual);
-        assertTrue(true);
+        assertEquals(expected, actual);
     }
 }
