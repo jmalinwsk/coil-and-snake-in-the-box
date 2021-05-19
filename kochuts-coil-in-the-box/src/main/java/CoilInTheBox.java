@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,10 +11,24 @@ public class CoilInTheBox {
     private Stack<Integer> pivotStack;
     private ArrayList<Integer> returnPaths;
     private final boolean showOnlyBestResult;
+    private final boolean saveToFile;
+    private FileParser fileParser;
 
-    public CoilInTheBox(Hypercube hypercube, boolean showOnlyBestResult) {
+    public CoilInTheBox(Hypercube hypercube, boolean showOnlyBestResult, boolean saveToFile) throws IOException {
         this.hypercube = hypercube;
         this.showOnlyBestResult = showOnlyBestResult;
+        this.saveToFile = saveToFile;
+        if(this.saveToFile)
+            if(showOnlyBestResult)
+                this.fileParser = new FileParser(
+                        "output/coil_" +
+                                this.hypercube.getDimension() +
+                                "_bestOnly.csv");
+            else
+                this.fileParser = new FileParser(
+                        "output/coil_" +
+                                this.hypercube.getDimension() +
+                                "_all.csv");
     }
 
     private void createNodeStack() {
@@ -79,35 +94,41 @@ public class CoilInTheBox {
         });
     }
 
-    private void saveBestCoil() {
+    private void saveBestCoil() throws IOException {
         Stack<Integer> currentStack = (Stack<Integer>) this.nodeStack.clone();
         ArrayList<Integer> coil = new ArrayList<>();
         while (!currentStack.isEmpty()) {
             coil.add(currentStack.pop());
         }
-        if (coils.isEmpty())
+        if (coils.isEmpty()) {
             this.coils.add(coil);
+            fileParser.addToFile(coil, "coil");
+        }
         else {
             sortCoils();
             if (coil.size() > coils.get(0).size()) {
                 coils = new ArrayList<ArrayList<Integer>>();
+                fileParser.cleanFile();
                 coils.add(coil);
+                fileParser.addToFile(coil, "coil");
             } else if (coil.size() == coils.get(0).size()) {
                 coils.add(coil);
+                fileParser.addToFile(coil, "coil");
             }
         }
     }
 
-    private void saveCoil() {
+    private void saveCoil() throws IOException {
         Stack<Integer> currentStack = (Stack<Integer>) this.nodeStack.clone();
         ArrayList<Integer> coil = new ArrayList<>();
         while (!currentStack.isEmpty()) {
             coil.add(currentStack.pop());
         }
         this.coils.add(coil);
+        fileParser.addToFile(coil, "coil");
     }
 
-    private void saveCoilIfCanClose() {
+    private void saveCoilIfCanClose() throws IOException {
         int top = nodeStack.peek();
         for (int i = 0; i < hypercube.getDimension(); i++) {
             int neighbourId = top ^ (1 << i);
@@ -143,7 +164,7 @@ public class CoilInTheBox {
         }
     }
 
-    private int search(int depth) {
+    private int search(int depth) throws IOException {
         int currentNode = nodeStack.peek();
         int currentPivot = pivotStack.peek();
         ArrayList<ArrayList<Node>> ret = markCurrentNeighbours(currentNode);
@@ -186,16 +207,20 @@ public class CoilInTheBox {
         return 0;
     }
 
-    public ArrayList<ArrayList<Integer>> searchForLongestCoil() {
+    public ArrayList<ArrayList<Integer>> searchForLongestCoil() throws IOException {
         this.coils = new ArrayList<>();
         hypercube.getNodes().get(0).mark();
         createNodeStack();
         createPivotStack();
         createReturnPaths();
+        if(saveToFile)
+            fileParser.createFile();
 
         search(0);
 
-        showResult();
+        if(saveToFile)
+            fileParser.closeFile();
+        else showResult();
 
         return this.coils; //for unit testing
     }
