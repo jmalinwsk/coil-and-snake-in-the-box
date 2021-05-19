@@ -22,10 +22,12 @@ public class FileParser {
     public void createFile() throws IOException {
         if(this.file.exists()) {
             cleanFile();
+            this.file.createNewFile();
         }
         else {
             File outputCatalog = new File("output");
-            outputCatalog.mkdir();
+            if(!outputCatalog.exists())
+                outputCatalog.mkdir();
             this.file.createNewFile();
         }
 
