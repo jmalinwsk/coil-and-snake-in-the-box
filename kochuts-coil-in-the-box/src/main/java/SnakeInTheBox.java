@@ -12,6 +12,7 @@ public class SnakeInTheBox {
     private final boolean showOnlyBestResult;
     private final boolean saveToFile;
     private FileParser fileParser;
+    private int longestSnake;
 
     public SnakeInTheBox(Hypercube hypercube, boolean showOnlyBestResult, boolean saveToFile) throws IOException {
         this.hypercube = hypercube;
@@ -36,8 +37,8 @@ public class SnakeInTheBox {
     }
 
     private void createPivotStack() {
-        pivotStack = new Stack<>();
-        pivotStack.push(-1);
+            pivotStack = new Stack<>();
+            pivotStack.push(-1);
     }
 
     private boolean allCurrentNeighboursAreMarked(ArrayList<Node> markedAtThisLevel) {
@@ -78,16 +79,25 @@ public class SnakeInTheBox {
         while (!currentStack.isEmpty()) {
             snake.add(currentStack.pop());
         }
-        if (snakes.isEmpty())
+        if (snakes.isEmpty()) {
             this.snakes.add(snake);
+            if(saveToFile)
+                fileParser.addToFile(snake, "snake");
+            longestSnake = snake.size()-1;
+        }
         else {
             sortSnakes();
-            if (snake.size() > snakes.get(0).size()) {
+            //TODO: add max value + saveToFile
+            if (snake.size()-1 > longestSnake) {
+                longestSnake = snake.size()-1;
                 snakes = new ArrayList<ArrayList<Integer>>();
-                fileParser.cleanFile();
                 snakes.add(snake);
-                fileParser.addToFile(snake, "snake");
-            } else if (snake.size() == snakes.get(0).size()) {
+                if(saveToFile) {
+                    fileParser.cleanFile();
+                    fileParser.addToFile(snake, "snake");
+                }
+                System.out.println(snake.size());
+            } else if (snake.size() == longestSnake) {
                 snakes.add(snake);
                 fileParser.addToFile(snake, "snake");
             }
@@ -101,7 +111,10 @@ public class SnakeInTheBox {
             snake.add(currentStack.pop());
         }
         this.snakes.add(snake);
-        fileParser.addToFile(snake, "snake");
+        if(saveToFile)
+            fileParser.addToFile(snake, "snake");
+        if(snake.size()-1 > longestSnake)
+            longestSnake = snake.size()-1;
     }
 
     private void unmarkAllNodesMarkedAtThisLevel(ArrayList<Node> marked) {
@@ -123,7 +136,7 @@ public class SnakeInTheBox {
         }
     }
 
-    private int search(int depth) throws IOException {
+    private int search(int depth) throws Exception {
         int currentNode = nodeStack.peek();
         int currentPivot = pivotStack.peek();
         ArrayList<Node> markedAtThisLevel = markCurrentNeighbours(currentNode);
@@ -142,8 +155,8 @@ public class SnakeInTheBox {
                     search(depth + 1);
                     nodeStack.pop();
                     pivotStack.pop();
-                    if (nodeStack.isEmpty())
-                        return 0;
+//                    if (nodeStack.isEmpty())
+//                        throw new Exception();
                 }
             }
             if (currentPivot < hypercube.getDimension() - 1) {
@@ -155,8 +168,8 @@ public class SnakeInTheBox {
                     search(depth + 1);
                     nodeStack.pop();
                     pivotStack.pop();
-                    if (nodeStack.isEmpty())
-                        return 0;
+//                    if (nodeStack.isEmpty())
+//                        throw new Exception();
                 }
             }
         }
@@ -164,8 +177,9 @@ public class SnakeInTheBox {
         return 0;
     }
 
-    public ArrayList<ArrayList<Integer>> searchForLongestSnake() throws IOException {
+    public int searchForLongestSnake() throws Exception {
         this.snakes = new ArrayList<>();
+        longestSnake = -1;
         hypercube.getNodes().get(0).mark();
         createNodeStack();
         createPivotStack();
@@ -180,6 +194,6 @@ public class SnakeInTheBox {
         else showResult();
 
 
-        return this.snakes; //for unit testing
+        return longestSnake; //for unit testing
     }
 }
