@@ -12,7 +12,7 @@ public class Hypercube {
     }
 
     private void createNodes() {
-        int amountOfNodes = (int) (pow(2, dimension - 1) * dimension);
+        int amountOfNodes = (int) (pow(2, dimension));
         nodes = new ArrayList<>();
         for (int i = 0; i < amountOfNodes; i++)
             nodes.add(new Node(i));
