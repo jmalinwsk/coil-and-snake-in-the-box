@@ -95,7 +95,7 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkAllResultsBestLengthForDim5() throws Exception {
+    public void checkAllResultsForDim5() throws Exception {
         hypercube = new Hypercube(5);
         snakeInTheBox = new SnakeInTheBox(hypercube, false, true);
         int expected = 13;
@@ -115,7 +115,7 @@ public class SnakeInTheBoxTests {
     }
 
     @Test
-    public void checkAllResultsBestLengthForDim6() throws Exception {
+    public void checkAllResultsForDim6() throws Exception {
         hypercube = new Hypercube(6);
         snakeInTheBox = new SnakeInTheBox(hypercube, false, true);
         int expected = 26;

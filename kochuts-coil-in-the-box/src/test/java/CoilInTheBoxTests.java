@@ -22,11 +22,8 @@ public class CoilInTheBoxTests {
     public void checkAllResultsForDim2() throws IOException {
         hypercube = new Hypercube(2);
         coilInTheBox = new CoilInTheBox(hypercube, false, true);
-        ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
-        expected.add(new ArrayList<>() {{
-            add(2); add(3); add(1); add(0);
-        }});
-        ArrayList<ArrayList<Integer>> actual = coilInTheBox.searchForLongestCoil();
+        int expected = 4;
+        int actual = coilInTheBox.searchForLongestCoil();
 
         assertEquals(expected, actual);
     }
@@ -35,11 +32,10 @@ public class CoilInTheBoxTests {
     public void checkBestResultForDim2() throws IOException {
         hypercube = new Hypercube(2);
         coilInTheBox = new CoilInTheBox(hypercube, true, true);
-        ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
-        expected.add(new ArrayList<>() {{
-            add(2); add(3); add(1); add(0);
-        }});
-        ArrayList<ArrayList<Integer>> actual = coilInTheBox.searchForLongestCoil();
+        int expected = 4;
+        int actual = coilInTheBox.searchForLongestCoil();
+
+        assertEquals(expected, actual);
 
         assertEquals(expected, actual);
     }
@@ -48,14 +44,8 @@ public class CoilInTheBoxTests {
     public void checkAllResultsForDim3() throws IOException {
         hypercube = new Hypercube(3);
         coilInTheBox = new CoilInTheBox(hypercube, false, true);
-        ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
-        expected.add(new ArrayList<>() {{
-            add(4); add(6); add(7); add(3); add(1); add(0);
-        }});
-        expected.add(new ArrayList<>() {{
-            add(2); add(3); add(1); add(0);
-        }});
-        ArrayList<ArrayList<Integer>> actual = coilInTheBox.searchForLongestCoil();
+        int expected = 6;
+        int actual = coilInTheBox.searchForLongestCoil();
 
         assertEquals(expected, actual);
     }
@@ -64,22 +54,18 @@ public class CoilInTheBoxTests {
     public void checkBestResultForDim3() throws IOException {
         hypercube = new Hypercube(3);
         coilInTheBox = new CoilInTheBox(hypercube, true, true);
-        ArrayList<ArrayList<Integer>> expected = new ArrayList<>();
-        expected.add(new ArrayList<>() {{
-            add(4); add(6); add(7); add(3); add(1); add(0);
-        }});
-        ArrayList<ArrayList<Integer>> actual = coilInTheBox.searchForLongestCoil();
+        int expected = 6;
+        int actual = coilInTheBox.searchForLongestCoil();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void checkAllResultsBestLengthForDim4() throws IOException {
+    public void checkAllResultsForDim4() throws IOException {
         hypercube = new Hypercube(4);
         coilInTheBox = new CoilInTheBox(hypercube, false, true);
         int expected = 8;
-        ArrayList<ArrayList<Integer>> coils = coilInTheBox.searchForLongestCoil();
-        int actual = coils.get(0).size();
+        int actual = coilInTheBox.searchForLongestCoil();
 
         assertEquals(expected, actual);
     }
@@ -89,19 +75,17 @@ public class CoilInTheBoxTests {
         hypercube = new Hypercube(4);
         coilInTheBox = new CoilInTheBox(hypercube, true, true);
         int expected = 8;
-        ArrayList<ArrayList<Integer>> coils = coilInTheBox.searchForLongestCoil();
-        int actual = coils.get(0).size();
+        int actual = coilInTheBox.searchForLongestCoil();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void checkAllResultsBestLengthForDim5() throws IOException {
+    public void checkAllResultsForDim5() throws IOException {
         hypercube = new Hypercube(5);
         coilInTheBox = new CoilInTheBox(hypercube, false, true);
         int expected = 14;
-        ArrayList<ArrayList<Integer>> coils = coilInTheBox.searchForLongestCoil();
-        int actual = coils.get(0).size();
+        int actual = coilInTheBox.searchForLongestCoil();
 
         assertEquals(expected, actual);
     }
@@ -111,19 +95,17 @@ public class CoilInTheBoxTests {
         hypercube = new Hypercube(5);
         coilInTheBox = new CoilInTheBox(hypercube, true, true);
         int expected = 14;
-        ArrayList<ArrayList<Integer>> coils = coilInTheBox.searchForLongestCoil();
-        int actual = coils.get(0).size();
+        int actual = coilInTheBox.searchForLongestCoil();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void checkAllResultsBestLengthForDim6() throws IOException {
+    public void checkAllResultsForDim6() throws IOException {
         hypercube = new Hypercube(6);
         coilInTheBox = new CoilInTheBox(hypercube, false, true);
         int expected = 26;
-        ArrayList<ArrayList<Integer>> coils = coilInTheBox.searchForLongestCoil();
-        int actual = coils.get(0).size();
+        int actual = coilInTheBox.searchForLongestCoil();
 
         assertEquals(expected, actual);
     }
@@ -133,8 +115,7 @@ public class CoilInTheBoxTests {
         hypercube = new Hypercube(6);
         coilInTheBox = new CoilInTheBox(hypercube, true, true);
         int expected = 26;
-        ArrayList<ArrayList<Integer>> coils = coilInTheBox.searchForLongestCoil();
-        int actual = coils.get(0).size();
+        int actual = coilInTheBox.searchForLongestCoil();
 
         assertEquals(expected, actual);
     }
@@ -144,9 +125,8 @@ public class CoilInTheBoxTests {
     public void checkBestResultForDim7() throws IOException {
         hypercube = new Hypercube(7);
         coilInTheBox = new CoilInTheBox(hypercube, true, true);
-        ArrayList<ArrayList<Integer>> expected = new ArrayList<>() {{
-        }};
-        ArrayList<ArrayList<Integer>> actual = coilInTheBox.searchForLongestCoil();
+        int expected = 48;
+        int actual = coilInTheBox.searchForLongestCoil();
 
         assertEquals(expected, actual);
     }

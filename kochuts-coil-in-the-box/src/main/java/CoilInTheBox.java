@@ -13,6 +13,7 @@ public class CoilInTheBox {
     private final boolean showOnlyBestResult;
     private final boolean saveToFile;
     private FileParser fileParser;
+    private int longestCoilSize;
 
     public CoilInTheBox(Hypercube hypercube, boolean showOnlyBestResult, boolean saveToFile) throws IOException {
         this.hypercube = hypercube;
@@ -104,17 +105,19 @@ public class CoilInTheBox {
             this.coils.add(coil);
             if(saveToFile)
                 fileParser.addToFile(coil, "coil");
+            longestCoilSize = coil.size();
         }
         else {
             sortCoils();
-            if (coil.size() > coils.get(0).size()) {
+            if (coil.size() > longestCoilSize) {
+                longestCoilSize = coil.size();
                 coils = new ArrayList<ArrayList<Integer>>();
                 coils.add(coil);
                 if(saveToFile) {
                     fileParser.cleanFile();
                     fileParser.addToFile(coil, "coil");
                 }
-            } else if (coil.size() == coils.get(0).size()) {
+            } else if (coil.size() == longestCoilSize) {
                 coils.add(coil);
                 if(saveToFile)
                     fileParser.addToFile(coil, "coil");
@@ -131,6 +134,8 @@ public class CoilInTheBox {
         this.coils.add(coil);
         if(saveToFile)
             fileParser.addToFile(coil, "coil");
+        if(coil.size() > longestCoilSize)
+            longestCoilSize = coil.size();
     }
 
     private void saveCoilIfCanClose() throws IOException {
@@ -208,8 +213,9 @@ public class CoilInTheBox {
         return 0;
     }
 
-    public ArrayList<ArrayList<Integer>> searchForLongestCoil() throws IOException {
+    public int searchForLongestCoil() throws IOException {
         this.coils = new ArrayList<>();
+        longestCoilSize = -1;
         hypercube.getNodes().get(0).mark();
         createNodeStack();
         createPivotStack();
@@ -223,6 +229,6 @@ public class CoilInTheBox {
             fileParser.closeFile();
         else showResult();
 
-        return this.coils; //for unit testing
+        return longestCoilSize; //for unit testing
     }
 }

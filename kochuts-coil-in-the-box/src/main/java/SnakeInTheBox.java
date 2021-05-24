@@ -12,7 +12,7 @@ public class SnakeInTheBox {
     private final boolean showOnlyBestResult;
     private final boolean saveToFile;
     private FileParser fileParser;
-    private int longestSnake;
+    private int longestSnakeSize;
 
     public SnakeInTheBox(Hypercube hypercube, boolean showOnlyBestResult, boolean saveToFile) throws IOException {
         this.hypercube = hypercube;
@@ -83,21 +83,19 @@ public class SnakeInTheBox {
             this.snakes.add(snake);
             if(saveToFile)
                 fileParser.addToFile(snake, "snake");
-            longestSnake = snake.size()-1;
+            longestSnakeSize = snake.size()-1;
         }
         else {
             sortSnakes();
-            //TODO: add max value + saveToFile
-            if (snake.size()-1 > longestSnake) {
-                longestSnake = snake.size()-1;
+            if (snake.size()-1 > longestSnakeSize) {
+                longestSnakeSize = snake.size()-1;
                 snakes = new ArrayList<ArrayList<Integer>>();
                 snakes.add(snake);
                 if(saveToFile) {
                     fileParser.cleanFile();
                     fileParser.addToFile(snake, "snake");
                 }
-                System.out.println(snake.size());
-            } else if (snake.size() == longestSnake) {
+            } else if (snake.size() == longestSnakeSize) {
                 snakes.add(snake);
                 if(saveToFile)
                     fileParser.addToFile(snake, "snake");
@@ -114,8 +112,8 @@ public class SnakeInTheBox {
         this.snakes.add(snake);
         if(saveToFile)
             fileParser.addToFile(snake, "snake");
-        if(snake.size()-1 > longestSnake)
-            longestSnake = snake.size()-1;
+        if(snake.size()-1 > longestSnakeSize)
+            longestSnakeSize = snake.size()-1;
     }
 
     private void unmarkAllNodesMarkedAtThisLevel(ArrayList<Node> marked) {
@@ -176,7 +174,7 @@ public class SnakeInTheBox {
 
     public int searchForLongestSnake() throws Exception {
         this.snakes = new ArrayList<>();
-        longestSnake = -1;
+        longestSnakeSize = -1;
         hypercube.getNodes().get(0).mark();
         createNodeStack();
         createPivotStack();
@@ -190,6 +188,6 @@ public class SnakeInTheBox {
         else showResult();
 
 
-        return longestSnake; //for unit testing
+        return longestSnakeSize; //for unit testing
     }
 }
