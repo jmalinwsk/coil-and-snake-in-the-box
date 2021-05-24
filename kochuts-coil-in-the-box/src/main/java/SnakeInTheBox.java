@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Stack;
 
@@ -66,11 +65,7 @@ public class SnakeInTheBox {
     }
 
     private void sortSnakes() {
-        Collections.sort(this.snakes, new Comparator<ArrayList>() {
-            public int compare(ArrayList s1, ArrayList s2) {
-                return s2.size() - s1.size();
-            }
-        });
+        this.snakes.sort((Comparator<ArrayList>) (s1, s2) -> s2.size() - s1.size());
     }
 
     private void saveBestSnake() throws IOException {
@@ -88,7 +83,7 @@ public class SnakeInTheBox {
             sortSnakes();
             if (snake.size() - 1 > longestSnakeSize) {
                 longestSnakeSize = snake.size() - 1;
-                snakes = new ArrayList<ArrayList<Integer>>();
+                snakes = new ArrayList<>();
                 snakes.add(snake);
                 if (saveToFile) {
                     fileParser.cleanFile();
@@ -126,12 +121,9 @@ public class SnakeInTheBox {
     }
 
     private void showResult() {
-        if (showOnlyBestResult)
-            printSnakes();
-        else {
+        if (!showOnlyBestResult)
             sortSnakes();
-            printSnakes();
-        }
+        printSnakes();
     }
 
     private int search(int depth) throws Exception {

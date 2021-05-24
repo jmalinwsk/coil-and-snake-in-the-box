@@ -1,5 +1,5 @@
 public class Node {
-    private int id;
+    private final int id;
     private boolean marked;
 
     public Node(int id) {

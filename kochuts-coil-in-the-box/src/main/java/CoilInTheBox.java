@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Stack;
 
@@ -88,11 +87,7 @@ public class CoilInTheBox {
     }
 
     private void sortCoils() {
-        Collections.sort(this.coils, new Comparator<ArrayList>() {
-            public int compare(ArrayList c1, ArrayList c2) {
-                return c2.size() - c1.size();
-            }
-        });
+        this.coils.sort((Comparator<ArrayList>) (c1, c2) -> c2.size() - c1.size());
     }
 
     private void saveBestCoil() throws IOException {
@@ -110,7 +105,7 @@ public class CoilInTheBox {
             sortCoils();
             if (coil.size() > longestCoilSize) {
                 longestCoilSize = coil.size();
-                coils = new ArrayList<ArrayList<Integer>>();
+                coils = new ArrayList<>();
                 coils.add(coil);
                 if (saveToFile) {
                     fileParser.cleanFile();
@@ -165,12 +160,9 @@ public class CoilInTheBox {
     }
 
     private void showResult() {
-        if (showOnlyBestResult)
-            printCoils();
-        else {
+        if (!showOnlyBestResult)
             sortCoils();
-            printCoils();
-        }
+        printCoils();
     }
 
     private int search(int depth) throws IOException {

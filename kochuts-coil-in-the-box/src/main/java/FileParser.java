@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class FileParser {
-    private File file;
+    private final File file;
     private FileWriter fileWriter;
     private BufferedWriter bufferedWriter;
 

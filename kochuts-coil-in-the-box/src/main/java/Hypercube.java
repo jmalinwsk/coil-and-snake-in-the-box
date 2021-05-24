@@ -3,7 +3,7 @@ import java.util.*;
 import static java.lang.Math.pow;
 
 public class Hypercube {
-    private int dimension;
+    private final int dimension;
     private ArrayList<Node> nodes;
 
     public Hypercube(int dimension) {
