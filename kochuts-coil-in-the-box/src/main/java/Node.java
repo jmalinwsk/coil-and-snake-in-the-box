@@ -11,7 +11,9 @@ public class Node {
         this.marked = true;
     }
 
-    public void unmark() {this.marked = false; }
+    public void unmark() {
+        this.marked = false;
+    }
 
     public int getId() {
         return id;

@@ -19,8 +19,8 @@ public class CoilInTheBox {
         this.hypercube = hypercube;
         this.showOnlyBestResult = showOnlyBestResult;
         this.saveToFile = saveToFile;
-        if(this.saveToFile)
-            if(showOnlyBestResult)
+        if (this.saveToFile)
+            if (showOnlyBestResult)
                 this.fileParser = new FileParser(
                         "output/coil_" +
                                 this.hypercube.getDimension() +
@@ -44,8 +44,8 @@ public class CoilInTheBox {
 
     private void createReturnPaths() {
         returnPaths = new ArrayList<>();
-        for(int i=1; i<hypercube.getDimension(); i++) {
-            int neighbourId = 0^(1<<i);
+        for (int i = 1; i < hypercube.getDimension(); i++) {
+            int neighbourId = 0 ^ (1 << i);
             returnPaths.add(neighbourId);
         }
     }
@@ -72,7 +72,7 @@ public class CoilInTheBox {
         for (int i = 0; i < hypercube.getDimension(); i++) {
             int neighbourId = currentNode ^ (1 << i);
             Node node = hypercube.getNodes().get(neighbourId);
-            if (currentNode!=0 && returnPaths.contains(node.getId())) {
+            if (currentNode != 0 && returnPaths.contains(node.getId())) {
                 returnPaths.remove(Integer.valueOf(node.getId()));
                 removedReturnPath.add(node);
             }
@@ -103,23 +103,22 @@ public class CoilInTheBox {
         }
         if (coils.isEmpty()) {
             this.coils.add(coil);
-            if(saveToFile)
+            if (saveToFile)
                 fileParser.addToFile(coil, "coil");
             longestCoilSize = coil.size();
-        }
-        else {
+        } else {
             sortCoils();
             if (coil.size() > longestCoilSize) {
                 longestCoilSize = coil.size();
                 coils = new ArrayList<ArrayList<Integer>>();
                 coils.add(coil);
-                if(saveToFile) {
+                if (saveToFile) {
                     fileParser.cleanFile();
                     fileParser.addToFile(coil, "coil");
                 }
             } else if (coil.size() == longestCoilSize) {
                 coils.add(coil);
-                if(saveToFile)
+                if (saveToFile)
                     fileParser.addToFile(coil, "coil");
             }
         }
@@ -132,9 +131,9 @@ public class CoilInTheBox {
             coil.add(currentStack.pop());
         }
         this.coils.add(coil);
-        if(saveToFile)
+        if (saveToFile)
             fileParser.addToFile(coil, "coil");
-        if(coil.size() > longestCoilSize)
+        if (coil.size() > longestCoilSize)
             longestCoilSize = coil.size();
     }
 
@@ -144,7 +143,7 @@ public class CoilInTheBox {
             int neighbourId = top ^ (1 << i);
             if (returnPaths.contains(neighbourId)) {
                 nodeStack.push(neighbourId);
-                if(showOnlyBestResult)
+                if (showOnlyBestResult)
                     saveBestCoil();
                 else saveCoil();
                 nodeStack.pop();
@@ -154,19 +153,19 @@ public class CoilInTheBox {
 
     private void unmarkAllNodesMarkedAtThisLevel(ArrayList<Node> marked,
                                                  ArrayList<Node> removedReturnPath) {
-        for(Node node : removedReturnPath)
+        for (Node node : removedReturnPath)
             returnPaths.add(node.getId());
         for (Node node : marked)
             node.unmark();
     }
 
     private void printCoils() {
-        for(ArrayList<Integer> s : this.coils)
+        for (ArrayList<Integer> s : this.coils)
             System.out.println(s.size() + " : " + s);
     }
 
     private void showResult() {
-        if(showOnlyBestResult)
+        if (showOnlyBestResult)
             printCoils();
         else {
             sortCoils();
@@ -220,12 +219,12 @@ public class CoilInTheBox {
         createNodeStack();
         createPivotStack();
         createReturnPaths();
-        if(saveToFile)
+        if (saveToFile)
             fileParser.createFile();
 
         search(0);
 
-        if(saveToFile)
+        if (saveToFile)
             fileParser.closeFile();
         else showResult();
 

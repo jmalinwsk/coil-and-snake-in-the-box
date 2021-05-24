@@ -18,8 +18,8 @@ public class SnakeInTheBox {
         this.hypercube = hypercube;
         this.showOnlyBestResult = showOnlyBestResult;
         this.saveToFile = saveToFile;
-        if(this.saveToFile)
-            if(showOnlyBestResult)
+        if (this.saveToFile)
+            if (showOnlyBestResult)
                 this.fileParser = new FileParser(
                         "output/snake_" +
                                 this.hypercube.getDimension() +
@@ -37,8 +37,8 @@ public class SnakeInTheBox {
     }
 
     private void createPivotStack() {
-            pivotStack = new Stack<>();
-            pivotStack.push(-1);
+        pivotStack = new Stack<>();
+        pivotStack.push(-1);
     }
 
     private boolean allCurrentNeighboursAreMarked(ArrayList<Node> markedAtThisLevel) {
@@ -81,23 +81,22 @@ public class SnakeInTheBox {
         }
         if (snakes.isEmpty()) {
             this.snakes.add(snake);
-            if(saveToFile)
+            if (saveToFile)
                 fileParser.addToFile(snake, "snake");
-            longestSnakeSize = snake.size()-1;
-        }
-        else {
+            longestSnakeSize = snake.size() - 1;
+        } else {
             sortSnakes();
-            if (snake.size()-1 > longestSnakeSize) {
-                longestSnakeSize = snake.size()-1;
+            if (snake.size() - 1 > longestSnakeSize) {
+                longestSnakeSize = snake.size() - 1;
                 snakes = new ArrayList<ArrayList<Integer>>();
                 snakes.add(snake);
-                if(saveToFile) {
+                if (saveToFile) {
                     fileParser.cleanFile();
                     fileParser.addToFile(snake, "snake");
                 }
-            } else if (snake.size()-1 == longestSnakeSize) {
+            } else if (snake.size() - 1 == longestSnakeSize) {
                 snakes.add(snake);
-                if(saveToFile)
+                if (saveToFile)
                     fileParser.addToFile(snake, "snake");
             }
         }
@@ -110,10 +109,10 @@ public class SnakeInTheBox {
             snake.add(currentStack.pop());
         }
         this.snakes.add(snake);
-        if(saveToFile)
+        if (saveToFile)
             fileParser.addToFile(snake, "snake");
-        if(snake.size()-1 > longestSnakeSize)
-            longestSnakeSize = snake.size()-1;
+        if (snake.size() - 1 > longestSnakeSize)
+            longestSnakeSize = snake.size() - 1;
     }
 
     private void unmarkAllNodesMarkedAtThisLevel(ArrayList<Node> marked) {
@@ -127,7 +126,7 @@ public class SnakeInTheBox {
     }
 
     private void showResult() {
-        if(showOnlyBestResult)
+        if (showOnlyBestResult)
             printSnakes();
         else {
             sortSnakes();
@@ -141,9 +140,9 @@ public class SnakeInTheBox {
         ArrayList<Node> markedAtThisLevel = markCurrentNeighbours(currentNode);
 
         if (allCurrentNeighboursAreMarked(markedAtThisLevel)) {
-            if(showOnlyBestResult)
+            if (showOnlyBestResult)
                 saveBestSnake();
-                else saveSnake();
+            else saveSnake();
             return 0;
         } else {
             for (int i = 0; i <= currentPivot; i++) {
@@ -178,12 +177,12 @@ public class SnakeInTheBox {
         hypercube.getNodes().get(0).mark();
         createNodeStack();
         createPivotStack();
-        if(saveToFile)
+        if (saveToFile)
             fileParser.createFile();
 
         search(0);
 
-        if(saveToFile)
+        if (saveToFile)
             fileParser.closeFile();
         else showResult();
 

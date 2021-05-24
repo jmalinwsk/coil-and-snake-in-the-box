@@ -23,12 +23,11 @@ public class FileParser {
     }
 
     public void createFile() throws IOException {
-        if(this.file.exists()) {
+        if (this.file.exists()) {
             cleanFile();
-        }
-        else {
+        } else {
             File outputCatalog = new File("output");
-            if(!outputCatalog.exists())
+            if (!outputCatalog.exists())
                 outputCatalog.mkdir();
             this.file.createNewFile();
         }
@@ -39,11 +38,11 @@ public class FileParser {
     }
 
     public void addToFile(ArrayList<Integer> graph, String type) throws IOException {
-        if(type.equals("snake"))
-            bufferedWriter.write(graph.size()-1 + ", ");
+        if (type.equals("snake"))
+            bufferedWriter.write(graph.size() - 1 + ", ");
         else if (type.equals("coil"))
             bufferedWriter.write(graph.size() + ", ");
-        for(Integer c : graph) {
+        for (Integer c : graph) {
             bufferedWriter.write(c + " ");
         }
         bufferedWriter.write(System.lineSeparator());
