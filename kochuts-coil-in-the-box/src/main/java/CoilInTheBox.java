@@ -102,18 +102,22 @@ public class CoilInTheBox {
         }
         if (coils.isEmpty()) {
             this.coils.add(coil);
-            fileParser.addToFile(coil, "coil");
+            if(saveToFile)
+                fileParser.addToFile(coil, "coil");
         }
         else {
             sortCoils();
             if (coil.size() > coils.get(0).size()) {
                 coils = new ArrayList<ArrayList<Integer>>();
-                fileParser.cleanFile();
                 coils.add(coil);
-                fileParser.addToFile(coil, "coil");
+                if(saveToFile) {
+                    fileParser.cleanFile();
+                    fileParser.addToFile(coil, "coil");
+                }
             } else if (coil.size() == coils.get(0).size()) {
                 coils.add(coil);
-                fileParser.addToFile(coil, "coil");
+                if(saveToFile)
+                    fileParser.addToFile(coil, "coil");
             }
         }
     }
@@ -125,7 +129,8 @@ public class CoilInTheBox {
             coil.add(currentStack.pop());
         }
         this.coils.add(coil);
-        fileParser.addToFile(coil, "coil");
+        if(saveToFile)
+            fileParser.addToFile(coil, "coil");
     }
 
     private void saveCoilIfCanClose() throws IOException {

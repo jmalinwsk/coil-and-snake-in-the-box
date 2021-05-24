@@ -99,7 +99,8 @@ public class SnakeInTheBox {
                 System.out.println(snake.size());
             } else if (snake.size() == longestSnake) {
                 snakes.add(snake);
-                fileParser.addToFile(snake, "snake");
+                if(saveToFile)
+                    fileParser.addToFile(snake, "snake");
             }
         }
     }
@@ -184,9 +185,8 @@ public class SnakeInTheBox {
 
         search(0);
 
-        if(saveToFile) {
+        if(saveToFile)
             fileParser.closeFile();
-        }
         else showResult();
 
 
