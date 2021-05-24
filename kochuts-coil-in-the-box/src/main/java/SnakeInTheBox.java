@@ -155,8 +155,6 @@ public class SnakeInTheBox {
                     search(depth + 1);
                     nodeStack.pop();
                     pivotStack.pop();
-//                    if (nodeStack.isEmpty())
-//                        throw new Exception();
                 }
             }
             if (currentPivot < hypercube.getDimension() - 1) {
@@ -168,8 +166,6 @@ public class SnakeInTheBox {
                     search(depth + 1);
                     nodeStack.pop();
                     pivotStack.pop();
-//                    if (nodeStack.isEmpty())
-//                        throw new Exception();
                 }
             }
         }

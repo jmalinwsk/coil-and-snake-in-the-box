@@ -184,8 +184,6 @@ public class CoilInTheBox {
                     search(depth + 1);
                     nodeStack.pop();
                     pivotStack.pop();
-                    if (nodeStack.isEmpty())
-                        return 0;
                 }
             }
             if (currentPivot < hypercube.getDimension() - 1) {
@@ -198,8 +196,6 @@ public class CoilInTheBox {
                     search(depth + 1);
                     nodeStack.pop();
                     pivotStack.pop();
-                    if (nodeStack.isEmpty())
-                        return 0;
                 }
             }
         }
