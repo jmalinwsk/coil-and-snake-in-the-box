@@ -95,7 +95,7 @@ public class SnakeInTheBox {
                     fileParser.cleanFile();
                     fileParser.addToFile(snake, "snake");
                 }
-            } else if (snake.size() == longestSnakeSize) {
+            } else if (snake.size()-1 == longestSnakeSize) {
                 snakes.add(snake);
                 if(saveToFile)
                     fileParser.addToFile(snake, "snake");

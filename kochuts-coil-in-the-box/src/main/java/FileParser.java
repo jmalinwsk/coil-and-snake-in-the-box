@@ -15,6 +15,9 @@ public class FileParser {
     }
 
     public void cleanFile() throws IOException {
+        this.fileWriter = new FileWriter(this.file);
+        this.bufferedWriter = new BufferedWriter(this.fileWriter);
+        bufferedWriter.write("length, details" + System.lineSeparator());
         this.file.delete();
         this.file.createNewFile();
     }
@@ -22,7 +25,6 @@ public class FileParser {
     public void createFile() throws IOException {
         if(this.file.exists()) {
             cleanFile();
-            this.file.createNewFile();
         }
         else {
             File outputCatalog = new File("output");
