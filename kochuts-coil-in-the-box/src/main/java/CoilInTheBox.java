@@ -66,14 +66,14 @@ public class CoilInTheBox {
 
     private ArrayList<ArrayList<Node>> markCurrentNeighbours(int currentNode) {
         ArrayList<Node> marked = new ArrayList<>();
-        ArrayList<Node> removedReturnPath = new ArrayList<>();
+        ArrayList<Node> removedReturnPaths = new ArrayList<>();
 
         for (int i = 0; i < hypercube.getDimension(); i++) {
             int neighbourId = currentNode ^ (1 << i);
             Node node = hypercube.getNodes().get(neighbourId);
             if (currentNode != 0 && returnPaths.contains(node.getId())) {
                 returnPaths.remove(Integer.valueOf(node.getId()));
-                removedReturnPath.add(node);
+                removedReturnPaths.add(node);
             }
             if (!node.isMarked()) {
                 marked.add(node);
@@ -82,7 +82,7 @@ public class CoilInTheBox {
         }
         ArrayList<ArrayList<Node>> result = new ArrayList<>();
         result.add(marked);
-        result.add(removedReturnPath);
+        result.add(removedReturnPaths);
         return result;
     }
 
