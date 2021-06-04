@@ -170,10 +170,10 @@ public class CoilInTheBox {
         int currentPivot = pivotStack.peek();
         ArrayList<ArrayList<Node>> ret = markCurrentNeighbours(currentNode);
         ArrayList<Node> markedAtThisLevel = ret.get(0);
-        ArrayList<Node> removedReturnPath = ret.get(1);
+        ArrayList<Node> removedReturnPaths = ret.get(1);
 
         if (allCurrentNeighboursAreMarked(markedAtThisLevel) || numberOfPossibleReturnPaths() == 0) {
-            unmarkAllNodesMarkedAtThisLevel(markedAtThisLevel, removedReturnPath);
+            unmarkAllNodesMarkedAtThisLevel(markedAtThisLevel, removedReturnPaths);
             return 0;
         } else {
             for (int i = 0; i <= currentPivot; i++) {
@@ -200,7 +200,7 @@ public class CoilInTheBox {
                 }
             }
         }
-        unmarkAllNodesMarkedAtThisLevel(markedAtThisLevel, removedReturnPath);
+        unmarkAllNodesMarkedAtThisLevel(markedAtThisLevel, removedReturnPaths);
         return 0;
     }
 
